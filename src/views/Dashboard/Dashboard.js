@@ -344,34 +344,13 @@ for (var i = 0; i <= elements; i++) {
 
 const mainChart = {
   labels: [
-    "Mo",
-    "Tu",
-    "We",
-    "Th",
-    "Fr",
-    "Sa",
-    "Su",
-    "Mo",
-    "Tu",
-    "We",
-    "Th",
-    "Fr",
-    "Sa",
-    "Su",
-    "Mo",
-    "Tu",
-    "We",
-    "Th",
-    "Fr",
-    "Sa",
-    "Su",
-    "Mo",
-    "Tu",
-    "We",
-    "Th",
-    "Fr",
-    "Sa",
-    "Su"
+    "19 Mar",
+    "20 Mar",
+    "21 Mar",
+    "22 Mar",
+    "23 Mar",
+    "24 Mar",
+    "25 Mar"
   ],
   datasets: [
     {
@@ -521,7 +500,7 @@ class Dashboard extends Component {
               <CardFooter>
                 <Row className="text-center">
                   <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Visits</div>
+                    <div className="text-muted">Node A</div>
                     <strong>29.703 Users (40%)</strong>
                     <Progress
                       className="progress-xs mt-2"
@@ -530,7 +509,7 @@ class Dashboard extends Component {
                     />
                   </Col>
                   <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Unique</div>
+                    <div className="text-muted">Node B</div>
                     <strong>24.093 Users (20%)</strong>
                     <Progress
                       className="progress-xs mt-2"
@@ -539,30 +518,12 @@ class Dashboard extends Component {
                     />
                   </Col>
                   <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Pageviews</div>
-                    <strong>78.706 Views (60%)</strong>
-                    <Progress
-                      className="progress-xs mt-2"
-                      color="warning"
-                      value="60"
-                    />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">New Users</div>
+                    <div className="text-muted">Node C</div>
                     <strong>22.123 Users (80%)</strong>
                     <Progress
                       className="progress-xs mt-2"
                       color="danger"
                       value="80"
-                    />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Bounce Rate</div>
-                    <strong>Average Rate (40.15%)</strong>
-                    <Progress
-                      className="progress-xs mt-2"
-                      color="primary"
-                      value="40"
                     />
                   </Col>
                 </Row>
@@ -578,7 +539,7 @@ class Dashboard extends Component {
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">OVERVIEW</CardTitle>
+                    <CardTitle className="mb-0">Graph by Node</CardTitle>
                     <div className="small text-muted">19 - 25 March 2019</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
@@ -602,11 +563,38 @@ class Dashboard extends Component {
                     </ButtonToolbar>
                   </Col>
                 </Row>
-                <div
-                  className="chart-wrapper"
-                  style={{ height: 300 + "px", marginTop: 40 + "px" }}>
-                  <Line data={mainChart} options={mainChartOpts} height={300} />
-                </div>
+                <Row>
+                  <Col
+                    sm="4"
+                    className="chart-wrapper"
+                    style={{ height: 300 + "px", marginTop: 40 + "px" }}>
+                    <Line
+                      data={mainChart}
+                      options={mainChartOpts}
+                      height={300}
+                    />
+                  </Col>
+                  <Col
+                    sm="4"
+                    className="chart-wrapper"
+                    style={{ height: 300 + "px", marginTop: 40 + "px" }}>
+                    <Line
+                      data={mainChart}
+                      options={mainChartOpts}
+                      height={300}
+                    />
+                  </Col>
+                  <Col
+                    sm="4"
+                    className="chart-wrapper"
+                    style={{ height: 300 + "px", marginTop: 40 + "px" }}>
+                    <Line
+                      data={mainChart}
+                      options={mainChartOpts}
+                      height={300}
+                    />
+                  </Col>
+                </Row>
               </CardBody>
             </Card>
           </Col>
@@ -620,46 +608,9 @@ class Dashboard extends Component {
               <CardBody>
                 <Row>
                   <Col xs="12" md="6" xl="6">
-                    <Row>
-                      <Col sm="6">
-                        <div className="callout callout-info">
-                          <small className="text-muted">
-                            Lowest Temperature
-                          </small>
-                          <br />
-                          <strong className="h4">9,123</strong>
-                          <div className="chart-wrapper">
-                            <Line
-                              data={makeSparkLineData(0, brandPrimary)}
-                              options={sparklineChartOpts}
-                              width={100}
-                              height={30}
-                            />
-                          </div>
-                        </div>
-                      </Col>
-                      <Col sm="6">
-                        <div className="callout callout-danger">
-                          <small className="text-muted">
-                            Highest temperature
-                          </small>
-                          <br />
-                          <strong className="h4">22,643</strong>
-                          <div className="chart-wrapper">
-                            <Line
-                              data={makeSparkLineData(1, brandDanger)}
-                              options={sparklineChartOpts}
-                              width={100}
-                              height={30}
-                            />
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                    <hr className="mt-0" />
                     <div className="progress-group mb-4">
                       <div className="progress-group-prepend">
-                        <span className="progress-group-text">Monday</span>
+                        <span className="progress-group-text">19 March</span>
                       </div>
                       <div className="progress-group-bars">
                         <Progress
@@ -676,7 +627,7 @@ class Dashboard extends Component {
                     </div>
                     <div className="progress-group mb-4">
                       <div className="progress-group-prepend">
-                        <span className="progress-group-text">Tuesday</span>
+                        <span className="progress-group-text">20 March</span>
                       </div>
                       <div className="progress-group-bars">
                         <Progress
@@ -693,7 +644,7 @@ class Dashboard extends Component {
                     </div>
                     <div className="progress-group mb-4">
                       <div className="progress-group-prepend">
-                        <span className="progress-group-text">Wednesday</span>
+                        <span className="progress-group-text">21 March</span>
                       </div>
                       <div className="progress-group-bars">
                         <Progress
@@ -710,7 +661,7 @@ class Dashboard extends Component {
                     </div>
                     <div className="progress-group mb-4">
                       <div className="progress-group-prepend">
-                        <span className="progress-group-text">Thursday</span>
+                        <span className="progress-group-text">22 March</span>
                       </div>
                       <div className="progress-group-bars">
                         <Progress
@@ -727,7 +678,7 @@ class Dashboard extends Component {
                     </div>
                     <div className="progress-group mb-4">
                       <div className="progress-group-prepend">
-                        <span className="progress-group-text">Friday</span>
+                        <span className="progress-group-text">23 March</span>
                       </div>
                       <div className="progress-group-bars">
                         <Progress
@@ -744,7 +695,7 @@ class Dashboard extends Component {
                     </div>
                     <div className="progress-group mb-4">
                       <div className="progress-group-prepend">
-                        <span className="progress-group-text">Saturday</span>
+                        <span className="progress-group-text">24 March</span>
                       </div>
                       <div className="progress-group-bars">
                         <Progress
@@ -761,7 +712,7 @@ class Dashboard extends Component {
                     </div>
                     <div className="progress-group mb-4">
                       <div className="progress-group-prepend">
-                        <span className="progress-group-text">Sunday</span>
+                        <span className="progress-group-text">25 March</span>
                       </div>
                       <div className="progress-group-bars">
                         <Progress
