@@ -332,7 +332,7 @@ function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-var elements = 27;
+var elements = 7;
 var data1 = [];
 var data2 = [];
 var data3 = [];
@@ -342,6 +342,10 @@ for (var i = 0; i <= elements; i++) {
   data2.push(random(80, 100));
   data3.push(65);
 }
+
+var test = [10, 20, 30, 40, 50, 60, 70];
+var device1 = [];
+var device2 = [];
 
 const mainChart = {
   labels: [
@@ -360,7 +364,7 @@ const mainChart = {
       borderColor: brandInfo,
       pointHoverBackgroundColor: "#fff",
       borderWidth: 2,
-      data: data1
+      data: test
     },
     {
       label: "Node B",
@@ -433,16 +437,20 @@ const mainChartOpts = {
 class Dashboard extends Component {
   getDataFromFirebase() {
     console.log("[GET DATA FROM FIREBASE]");
-
     axios
-      .get('https://cors-anywhere.herokuapp.com/' + 'us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata')
+      .get(
+        "https://cors-anywhere.herokuapp.com/" +
+          "us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
+      )
       .then(response => {
-        // console.log("[RESPONSE]" + " " + response.data);
-        const data = response.data;
-        console.log("[RESPONSE]" + " " + JSON.stringify(data, null, 4));
+        const data = JSON.stringify(response.data, null, 4);
+        // console.log("[RESPONSE]" + " " + data);
+        device1 = response.data[0];
+        device2 = response.data[1];
+        console.log("[RESPONSE]" + " " + device1[0].value);
+   
       })
       .catch(error => console.log("Error: " + error));
-    
   }
 
   constructor(props) {
@@ -453,7 +461,7 @@ class Dashboard extends Component {
 
     this.state = {
       dropdownOpen: false,
-      radioSelected: 2
+      radioSelected: 1 // initial state to 'Day'
     };
   }
 
@@ -485,7 +493,7 @@ class Dashboard extends Component {
                     <CardTitle className="mb-0">Overview</CardTitle>
                     <div className="small text-muted">19 - 25 March 2019</div>
                   </Col>
-                  <Col sm="7" className="d-none d-sm-inline-block">
+                  {/* <Col sm="7" className="d-none d-sm-inline-block">
                     <ButtonToolbar
                       className="float-right"
                       aria-label="Toolbar with button groups">
@@ -504,7 +512,7 @@ class Dashboard extends Component {
                         </Button>
                       </ButtonGroup>
                     </ButtonToolbar>
-                  </Col>
+                  </Col> */}
                 </Row>
                 <div
                   className="chart-wrapper"
@@ -557,7 +565,7 @@ class Dashboard extends Component {
                     <CardTitle className="mb-0">Graph by Node</CardTitle>
                     <div className="small text-muted">19 - 25 March 2019</div>
                   </Col>
-                  <Col sm="7" className="d-none d-sm-inline-block">
+                  {/* <Col sm="7" className="d-none d-sm-inline-block">
                     <ButtonToolbar
                       className="float-right"
                       aria-label="Toolbar with button groups">
@@ -576,7 +584,7 @@ class Dashboard extends Component {
                         </Button>
                       </ButtonGroup>
                     </ButtonToolbar>
-                  </Col>
+                  </Col> */}
                 </Row>
                 <Row>
                   <Col
