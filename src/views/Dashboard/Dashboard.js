@@ -26,7 +26,6 @@ const brandInfo = getStyle("--info");
 const brandWarning = getStyle("--warning");
 const brandDanger = getStyle("--danger");
 
-
 // Main Chart
 
 //Random Numbers
@@ -45,125 +44,167 @@ for (var i = 0; i <= elements; i++) {
   data3.push(65);
 }
 
-var test = [10, 20, 30, 40, 50, 60, 70];
 var device1 = [];
 var device2 = [];
 
-const mainChart = {
-  labels: [
-    "19 Mar",
-    "20 Mar",
-    "21 Mar",
-    "22 Mar",
-    "23 Mar",
-    "24 Mar",
-    "25 Mar"
-  ],
-  datasets: [
-    {
-      label: "Node A",
-      backgroundColor: hexToRgba(brandInfo, 10),
-      borderColor: brandInfo,
-      pointHoverBackgroundColor: "#fff",
-      borderWidth: 2,
-      data: test
-    },
-    {
-      label: "Node B",
-      backgroundColor: "transparent",
-      borderColor: brandSuccess,
-      pointHoverBackgroundColor: "#fff",
-      borderWidth: 2,
-      data: data2
-    },
-    {
-      label: "Node C",
-      backgroundColor: "transparent",
-      borderColor: brandDanger,
-      pointHoverBackgroundColor: "#fff",
-      borderWidth: 1,
-      data: data3
-    }
-  ]
-};
-
-const mainChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips,
-    intersect: true,
-    mode: "index",
-    position: "nearest",
-    callbacks: {
-      labelColor: function(tooltipItem, chart) {
-        return {
-          backgroundColor:
-            chart.data.datasets[tooltipItem.datasetIndex].borderColor
-        };
-      }
-    }
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: false
-  },
-  scales: {
-    xAxes: [
-      {
-        gridLines: {
-          drawOnChartArea: false
-        }
-      }
-    ],
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250
-        }
-      }
-    ]
-  },
-  elements: {
-    point: {
-      radius: 0,
-      hitRadius: 10,
-      hoverRadius: 4,
-      hoverBorderWidth: 3
-    }
-  }
-};
-
-function getDataFromFirebase() {
-  console.log("[GET DATA FROM FIREBASE]");
-  axios
-    .get(
-      "https://cors-anywhere.herokuapp.com/" +
-        "us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
-    )
-    .then(response => {
-      const data = JSON.stringify(response.data, null, 4);
-      console.log("[RESPONSE]" + " " + data);
-      device1 = response.data[0];
-      device2 = response.data[1];
-      console.log(device1[0].value);
-    })
-    .catch(error => console.log("Error: " + error));
-}
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    getDataFromFirebase();
+    this.getDataFromFirebase();
+    this.myInterval = setInterval(() => this.getDataFromFirebase(),1000*60*1)
+
     this.toggle = this.toggle.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
     this.state = {
       dropdownOpen: false,
-      radioSelected: 1 // initial state to 'Day'
+      radioSelected: 1,
+      mainChart: {
+        // labels: [
+        //   "19 Mar",
+        //   "20 Mar",
+        //   "21 Mar",
+        //   "22 Mar",
+        //   "23 Mar",
+        //   "24 Mar",
+        //   "25 Mar"
+        // ],
+        datasets: [
+          {
+            label: "Node A",
+            backgroundColor: hexToRgba(brandInfo, 10),
+            borderColor: brandInfo,
+            pointHoverBackgroundColor: "#fff",
+            borderWidth: 2,
+            data: [10, 20, 30]
+          },
+          {
+            label: "Node B",
+            backgroundColor: "transparent",
+            borderColor: brandSuccess,
+            pointHoverBackgroundColor: "#fff",
+            borderWidth: 2,
+            data: data2
+          },
+          {
+            label: "Node C",
+            backgroundColor: "transparent",
+            borderColor: brandDanger,
+            pointHoverBackgroundColor: "#fff",
+            borderWidth: 1,
+            data: data3
+          }
+        ]
+      }
     };
+
+    this.mainChartOpts = {
+      tooltips: {
+        enabled: false,
+        custom: CustomTooltips,
+        intersect: true,
+        mode: "index",
+        position: "nearest",
+        callbacks: {
+          labelColor: function(tooltipItem, chart) {
+            return {
+              backgroundColor:
+                chart.data.datasets[tooltipItem.datasetIndex].borderColor
+            };
+          }
+        }
+      },
+      maintainAspectRatio: false,
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [
+          {
+            gridLines: {
+              drawOnChartArea: false
+            },
+            ticks: {
+              autoSkip: true,
+              source:'labels'
+            },
+            type: 'time',
+            time: {
+              unit: 'hour',
+              displayFormats: {
+                  hour: 'hA D/MMM'
+              }
+            }
+          }
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              maxTicksLimit: 5,
+              stepSize: 10,
+              max: 40
+            }
+          }
+        ]
+      },
+      elements: {
+        point: {
+          radius: 0,
+          hitRadius: 10,
+          hoverRadius: 4,
+          hoverBorderWidth: 3
+        }
+      }
+    };
+  }
+
+  getDataFromFirebase() {
+    console.log("[GET DATA FROM FIREBASE]");
+    return axios
+      .get(
+        "https://cors-anywhere.herokuapp.com/" +
+          "us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
+      )
+      .then(response => {
+        const data = JSON.stringify(response.data, null, 4);
+        console.log("[RESPONSE]" + " " + data);
+        const resData = response.data.map(x => x.filter(y => new Date() - new Date(y.timestampISO) <= 1000*60*60*24*7))
+        const tData = resData.map(x => x.map(y => y.value))
+        const tLabel = resData.map(x => x.map(y => new Date(y.timestampISO)))
+
+        const newChartData = {
+          ...this.state.mainChart,
+          labels: tLabel[0],
+          datasets: [
+            {
+              ...this.state.mainChart.datasets[0],
+              data: tData[0]
+            },
+            {
+              ...this.state.mainChart.datasets[1],
+              data: tData[1]
+            },
+            {
+              ...this.state.mainChart.datasets[2],
+              data: tData[2]
+            },
+          ]
+        };
+
+        this.setState({
+          mainChart: newChartData
+        });
+        device2 = response.data[1];
+        // console.log(device1[0].value);
+        const eiei = [10, 20, 30, 40, 50, 60, 70];
+
+        console.log(this.state.mainChart);
+
+        return eiei;
+      })
+      .catch(error => console.log("Error: " + error));
   }
 
   toggle() {
@@ -198,7 +239,12 @@ class Dashboard extends Component {
                 <div
                   className="chart-wrapper"
                   style={{ height: 300 + "px", marginTop: 40 + "px" }}>
-                  <Line data={mainChart} options={mainChartOpts} height={300} />
+                  <Line
+                    data={this.state.mainChart}
+                    options={this.mainChartOpts}
+                    height={300}
+                    redraw
+                  />
                 </div>
               </CardBody>
             </Card>
@@ -222,8 +268,8 @@ class Dashboard extends Component {
                     className="chart-wrapper"
                     style={{ height: 300 + "px", marginTop: 40 + "px" }}>
                     <Line
-                      data={mainChart}
-                      options={mainChartOpts}
+                      data={this.state.mainChart}
+                      options={this.mainChartOpts}
                       height={300}
                     />
                   </Col>
@@ -232,8 +278,8 @@ class Dashboard extends Component {
                     className="chart-wrapper"
                     style={{ height: 300 + "px", marginTop: 40 + "px" }}>
                     <Line
-                      data={mainChart}
-                      options={mainChartOpts}
+                      data={this.state.mainChart}
+                      options={this.mainChartOpts}
                       height={300}
                     />
                   </Col>
@@ -242,8 +288,8 @@ class Dashboard extends Component {
                     className="chart-wrapper"
                     style={{ height: 300 + "px", marginTop: 40 + "px" }}>
                     <Line
-                      data={mainChart}
-                      options={mainChartOpts}
+                      data={this.state.mainChart}
+                      options={this.mainChartOpts}
                       height={300}
                     />
                   </Col>
