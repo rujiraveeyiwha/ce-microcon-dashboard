@@ -448,13 +448,14 @@ class Dashboard extends Component {
         device1 = response.data[0];
         device2 = response.data[1];
         console.log("[RESPONSE]" + " " + device1[0].value);
-   
+        this.setState({ data: data });
       })
       .catch(error => console.log("Error: " + error));
   }
 
   constructor(props) {
     super(props);
+    this.state = { data: [] };
     this.getDataFromFirebase();
     this.toggle = this.toggle.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
@@ -520,7 +521,7 @@ class Dashboard extends Component {
                   <Line data={mainChart} options={mainChartOpts} height={300} />
                 </div>
               </CardBody>
-              <CardFooter>
+              {/* <CardFooter>
                 <Row className="text-center">
                   <Col sm={12} md className="mb-sm-2 mb-0">
                     <div className="text-muted">Node A</div>
@@ -550,7 +551,7 @@ class Dashboard extends Component {
                     />
                   </Col>
                 </Row>
-              </CardFooter>
+              </CardFooter> */}
             </Card>
           </Col>
         </Row>
