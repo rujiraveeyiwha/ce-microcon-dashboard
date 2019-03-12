@@ -44,9 +44,6 @@ for (var i = 0; i <= elements; i++) {
   data3.push(65);
 }
 
-var device1 = [];
-var device2 = [];
-
 
 class Dashboard extends Component {
   constructor(props) {
@@ -57,19 +54,12 @@ class Dashboard extends Component {
     this.toggle = this.toggle.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
+    this.load = true;
+
     this.state = {
       dropdownOpen: false,
       radioSelected: 1,
       mainChart: {
-        // labels: [
-        //   "19 Mar",
-        //   "20 Mar",
-        //   "21 Mar",
-        //   "22 Mar",
-        //   "23 Mar",
-        //   "24 Mar",
-        //   "25 Mar"
-        // ],
         datasets: [
           {
             label: "Node A",
@@ -168,6 +158,7 @@ class Dashboard extends Component {
           "us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
       )
       .then(response => {
+        this.load = false;
         const data = JSON.stringify(response.data, null, 4);
         console.log("[RESPONSE]" + " " + data);
         const resData = response.data.map(x => x.filter(y => new Date() - new Date(y.timestampISO) <= 1000*60*60*24*7))
@@ -196,13 +187,7 @@ class Dashboard extends Component {
         this.setState({
           mainChart: newChartData
         });
-        device2 = response.data[1];
-        // console.log(device1[0].value);
-        const eiei = [10, 20, 30, 40, 50, 60, 70];
-
         console.log(this.state.mainChart);
-
-        return eiei;
       })
       .catch(error => console.log("Error: " + error));
   }
@@ -224,7 +209,7 @@ class Dashboard extends Component {
   );
 
   render() {
-    return (
+    return (this.load == true) ? this.loading() : (
       <div className="animated fadeIn">
         <Row>
           <Col>
