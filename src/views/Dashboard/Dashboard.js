@@ -16,6 +16,7 @@ import {
 } from "reactstrap";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
 import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
+import axios from "axios";
 
 const Widget03 = lazy(() => import("../../views/Widgets/Widget03"));
 
@@ -430,9 +431,23 @@ const mainChartOpts = {
 };
 
 class Dashboard extends Component {
+  getDataFromFirebase() {
+    console.log("[GET DATA FROM FIREBASE]");
+
+    axios
+      .get('https://cors-anywhere.herokuapp.com/' + 'us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata')
+      .then(response => {
+        // console.log("[RESPONSE]" + " " + response.data);
+        const data = response.data;
+        console.log("[RESPONSE]" + " " + JSON.stringify(data, null, 4));
+      })
+      .catch(error => console.log("Error: " + error));
+    
+  }
+
   constructor(props) {
     super(props);
-
+    this.getDataFromFirebase();
     this.toggle = this.toggle.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
@@ -467,7 +482,7 @@ class Dashboard extends Component {
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">OVERVIEW</CardTitle>
+                    <CardTitle className="mb-0">Overview</CardTitle>
                     <div className="small text-muted">19 - 25 March 2019</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
