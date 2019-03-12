@@ -434,29 +434,27 @@ const mainChartOpts = {
   }
 };
 
-class Dashboard extends Component {
-  getDataFromFirebase() {
-    console.log("[GET DATA FROM FIREBASE]");
-    axios
-      .get(
-        "https://cors-anywhere.herokuapp.com/" +
-          "us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
-      )
-      .then(response => {
-        const data = JSON.stringify(response.data, null, 4);
-        // console.log("[RESPONSE]" + " " + data);
-        device1 = response.data[0];
-        device2 = response.data[1];
-        console.log("[RESPONSE]" + " " + device1[0].value);
-        this.setState({ data: data });
-      })
-      .catch(error => console.log("Error: " + error));
-  }
+function getDataFromFirebase() {
+  console.log("[GET DATA FROM FIREBASE]");
+  axios
+    .get(
+      "https://cors-anywhere.herokuapp.com/" +
+        "us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
+    )
+    .then(response => {
+      const data = JSON.stringify(response.data, null, 4);
+      // console.log("[RESPONSE]" + " " + data);
+      device1 = response.data[0];
+      device2 = response.data[1];
+      console.log("[RESPONSE]" + " " + device1[0].value);
+    })
+    .catch(error => console.log("Error: " + error));
+}
 
+class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: [] };
-    this.getDataFromFirebase();
+    getDataFromFirebase();
     this.toggle = this.toggle.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
