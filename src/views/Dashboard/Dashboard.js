@@ -44,12 +44,14 @@ for (var i = 0; i <= elements; i++) {
   data3.push(65);
 }
 
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.getDataFromFirebase();
-    this.myInterval = setInterval(() => this.getDataFromFirebase(),1000*60*1)
+    // this.myInterval = setInterval(
+    //   () => this.getDataFromFirebase(),
+    //   1000 * 60 * 1
+    // );
 
     this.toggle = this.toggle.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
@@ -117,13 +119,13 @@ class Dashboard extends Component {
             },
             ticks: {
               autoSkip: true,
-              source:'labels'
+              source: "labels"
             },
-            type: 'time',
+            type: "time",
             time: {
-              unit: 'hour',
+              unit: "hour",
               displayFormats: {
-                  hour: 'hA D/MMM'
+                hour: "hA D/MMM"
               }
             }
           }
@@ -161,9 +163,21 @@ class Dashboard extends Component {
         this.load = false;
         const data = JSON.stringify(response.data, null, 4);
         console.log("[RESPONSE]" + " " + data);
-        const resData = response.data.map(x => x.filter(y => new Date() - new Date(y.timestampISO) <= 1000*60*60*24*7))
-        const tData = resData.map(x => x.map(y => y.value))
-        const tLabel = resData.map(x => x.map(y => new Date(y.timestampISO)))
+        const resData = response.data.map(x =>
+          x.filter(
+            y =>
+              new Date() - new Date(y.timestampISO) <= 1000 * 60 * 60 * 24 * 7
+          )
+        );
+        const tData = resData.map(x => x.map(y => y.value));
+        const tLabel = resData.map(x => x.map(y => new Date(y.timestampISO)));
+        const tXY  = resData.map(x => x.map(y => {
+          return {
+            y: y.value,
+            x: new Date(y.timestampISO)
+          }
+        }
+      ))
 
         const newChartData = {
           ...this.state.mainChart,
@@ -171,16 +185,16 @@ class Dashboard extends Component {
           datasets: [
             {
               ...this.state.mainChart.datasets[0],
-              data: tData[0]
+              data: tXY[0]
             },
             {
               ...this.state.mainChart.datasets[1],
-              data: tData[1]
+              data: tXY[1]
             },
             {
               ...this.state.mainChart.datasets[2],
-              data: tData[2]
-            },
+              data: tXY[2]
+            }
           ]
         };
 
@@ -208,8 +222,19 @@ class Dashboard extends Component {
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
 
+  componentDidMount() {
+    let intervalId = setInterval(() => this.getDataFromFirebase(),1000 * 60 * 1);
+    this.setState({ intervalId: intervalId });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
   render() {
-    return (this.load == true) ? this.loading() : (
+    return this.load === true ? (
+      this.loading()
+    ) : (
       <div className="animated fadeIn">
         <Row>
           <Col>
