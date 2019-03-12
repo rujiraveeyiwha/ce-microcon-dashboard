@@ -443,10 +443,10 @@ function getDataFromFirebase() {
     )
     .then(response => {
       const data = JSON.stringify(response.data, null, 4);
-      // console.log("[RESPONSE]" + " " + data);
+      console.log("[RESPONSE]" + " " + data);
       device1 = response.data[0];
       device2 = response.data[1];
-      console.log("[RESPONSE]" + " " + device1[0].value);
+      console.log(device1[0].value);
     })
     .catch(error => console.log("Error: " + error));
 }
@@ -492,26 +492,6 @@ class Dashboard extends Component {
                     <CardTitle className="mb-0">Overview</CardTitle>
                     <div className="small text-muted">19 - 25 March 2019</div>
                   </Col>
-                  {/* <Col sm="7" className="d-none d-sm-inline-block">
-                    <ButtonToolbar
-                      className="float-right"
-                      aria-label="Toolbar with button groups">
-                      <ButtonGroup className="mr-3" aria-label="First group">
-                        <Button
-                          color="outline-secondary"
-                          onClick={() => this.onRadioBtnClick(1)}
-                          active={this.state.radioSelected === 1}>
-                          Day
-                        </Button>
-                        <Button
-                          color="outline-secondary"
-                          onClick={() => this.onRadioBtnClick(2)}
-                          active={this.state.radioSelected === 2}>
-                          Month
-                        </Button>
-                      </ButtonGroup>
-                    </ButtonToolbar>
-                  </Col> */}
                 </Row>
                 <div
                   className="chart-wrapper"
@@ -519,37 +499,6 @@ class Dashboard extends Component {
                   <Line data={mainChart} options={mainChartOpts} height={300} />
                 </div>
               </CardBody>
-              {/* <CardFooter>
-                <Row className="text-center">
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Node A</div>
-                    <strong>29.703 Users (40%)</strong>
-                    <Progress
-                      className="progress-xs mt-2"
-                      color="success"
-                      value="40"
-                    />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Node B</div>
-                    <strong>24.093 Users (20%)</strong>
-                    <Progress
-                      className="progress-xs mt-2"
-                      color="info"
-                      value="20"
-                    />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Node C</div>
-                    <strong>22.123 Users (80%)</strong>
-                    <Progress
-                      className="progress-xs mt-2"
-                      color="danger"
-                      value="80"
-                    />
-                  </Col>
-                </Row>
-              </CardFooter> */}
             </Card>
           </Col>
         </Row>
@@ -564,26 +513,6 @@ class Dashboard extends Component {
                     <CardTitle className="mb-0">Graph by Node</CardTitle>
                     <div className="small text-muted">19 - 25 March 2019</div>
                   </Col>
-                  {/* <Col sm="7" className="d-none d-sm-inline-block">
-                    <ButtonToolbar
-                      className="float-right"
-                      aria-label="Toolbar with button groups">
-                      <ButtonGroup className="mr-3" aria-label="First group">
-                        <Button
-                          color="outline-secondary"
-                          onClick={() => this.onRadioBtnClick(1)}
-                          active={this.state.radioSelected === 1}>
-                          Day
-                        </Button>
-                        <Button
-                          color="outline-secondary"
-                          onClick={() => this.onRadioBtnClick(2)}
-                          active={this.state.radioSelected === 2}>
-                          Month
-                        </Button>
-                      </ButtonGroup>
-                    </ButtonToolbar>
-                  </Col> */}
                 </Row>
                 <Row>
                   <Col
