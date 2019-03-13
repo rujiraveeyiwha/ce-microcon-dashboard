@@ -348,7 +348,7 @@ class Dashboard extends Component {
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">Overview</CardTitle>
-                    <div className="small text-muted">19 - 25 March 2019</div>
+                    <div className="small text-muted">7 Days Temperature Records</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <ButtonToolbar
@@ -359,49 +359,49 @@ class Dashboard extends Component {
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(0)}
                           active={this.state.radioSelected === 0}>
-                          7 Days
+                          All
                         </Button>
                         <Button
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(1)}
                           active={this.state.radioSelected === 1}>
-                          19 Mar
+                          Day 1
                         </Button>
                         <Button
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(2)}
                           active={this.state.radioSelected === 2}>
-                          20 Mar
+                          Day 2
                         </Button>
                         <Button
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(3)}
                           active={this.state.radioSelected === 3}>
-                          21 Mar
+                          Day 3
                         </Button>
                         <Button
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(4)}
                           active={this.state.radioSelected === 4}>
-                          22 Mar
+                          Day 4
                         </Button>
                         <Button
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(5)}
                           active={this.state.radioSelected === 5}>
-                          23 Mar
+                          Day 5
                         </Button>
                         <Button
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(6)}
                           active={this.state.radioSelected === 6}>
-                          24 Mar
+                          Day 6
                         </Button>
                         <Button
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(7)}
                           active={this.state.radioSelected === 7}>
-                          25 Mar
+                          Day 7
                         </Button>
                       </ButtonGroup>
                     </ButtonToolbar>
