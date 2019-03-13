@@ -17,6 +17,7 @@ import {
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
 import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
 import axios from "axios";
+import moment from "moment";
 
 const Widget03 = lazy(() => import("../../views/Widgets/Widget03"));
 
@@ -31,17 +32,6 @@ const brandDanger = getStyle("--danger");
 //Random Numbers
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-var elements = 7;
-var data1 = [];
-var data2 = [];
-var data3 = [];
-
-for (var i = 0; i <= elements; i++) {
-  data1.push(random(50, 200));
-  data2.push(random(80, 100));
-  data3.push(65);
 }
 
 class Dashboard extends Component {
@@ -65,33 +55,70 @@ class Dashboard extends Component {
         datasets: [
           {
             label: "Node A",
-            backgroundColor: hexToRgba(brandInfo, 10),
-            borderColor: brandInfo,
+            backgroundColor: hexToRgba("#118AB2", 10),
+            borderColor: "#118AB2",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
             data: [10, 20, 30]
           },
           {
             label: "Node B",
-            backgroundColor: "transparent",
-            borderColor: brandSuccess,
+            backgroundColor: hexToRgba("#07C0BB", 10),
+            borderColor: "#07C0BB",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: data2
+            data: [10, 20, 30]
           },
           {
             label: "Node C",
-            backgroundColor: "transparent",
-            borderColor: brandDanger,
+            backgroundColor: hexToRgba("#EF476F", 10),
+            borderColor: "#EF476F",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 1,
-            data: data3
+            data: [10, 20, 30]
+          }
+        ]
+      },
+      mainChartA: {
+        datasets: [
+          {
+            label: "Node A",
+            backgroundColor: hexToRgba("#118AB2", 10),
+            borderColor: "#118AB2",
+            pointHoverBackgroundColor: "#fff",
+            borderWidth: 2,
+            data: [10, 20, 30]
+          }
+        ]
+      },
+      mainChartB: {
+        datasets: [
+          {
+            label: "Node B",
+            backgroundColor: hexToRgba("#07C0BB", 10),
+            borderColor: "#07C0BB",
+            pointHoverBackgroundColor: "#fff",
+            borderWidth: 2,
+            data: [10, 20, 30]
+          }
+        ]
+      },
+      mainChartC: {
+        datasets: [
+          {
+            label: "Node C",
+            backgroundColor: hexToRgba("#EF476F", 10),
+            borderColor: "#EF476F",
+            pointHoverBackgroundColor: "#fff",
+            borderWidth: 1,
+            data: [10, 20, 30]
           }
         ]
       }
     };
 
     this.mainChartOpts = {
+      responsive: true,
       tooltips: {
         enabled: false,
         custom: CustomTooltips,
@@ -121,7 +148,7 @@ class Dashboard extends Component {
               autoSkip: true,
               source: "labels"
             },
-            type: "time",
+            type: "category",
             time: {
               unit: "hour",
               displayFormats: {
@@ -167,25 +194,24 @@ class Dashboard extends Component {
           x.filter(
             y =>
               new Date() - new Date(y.timestampISO) <= 1000 * 60 * 60 * 24 * 7
-              
           )
         );
         const tData = resData.map(x => x.map(y => y.value));
-        const tLabel = resData.map(x => x.map(y => this.roundMinutes(new Date(y.timestampISO))));
+        const tLabel = resData.map(x =>
+          x.map(y => this.roundHour(new Date(y.timestampISO)))
+        );
         const tXY = resData.map(x =>
           x.map(y => {
             return {
               y: y.value,
-              x: this.roundMinutes(new Date(y.timestampISO))
+              x: this.roundHour(new Date(y.timestampISO))
             };
           })
         );
 
-        console.log(tLabel);
-
         const newChartData = {
           ...this.state.mainChart,
-          labels: tLabel[0],
+          labels: tLabel[1],
           datasets: [
             {
               ...this.state.mainChart.datasets[0],
@@ -202,15 +228,56 @@ class Dashboard extends Component {
           ]
         };
 
+        const newChartDataA = {
+          ...this.state.mainChartA,
+          labels: tLabel[0],
+          datasets: [
+            {
+              ...this.state.mainChartA.datasets[0],
+              data: tXY[0]
+            }
+          ]
+        };
+
+        const newChartDataB = {
+          ...this.state.mainChartB,
+          labels: tLabel[1],
+          datasets: [
+            {
+              ...this.state.mainChartB.datasets[1],
+              data: tXY[1]
+            }
+          ]
+        };
+
+        const newChartDataC = {
+          ...this.state.mainChartC,
+          labels: tLabel[2],
+          datasets: [
+            {
+              ...this.state.mainChartC.datasets[2],
+              data: tXY[2]
+            }
+          ]
+        };
+
+        // console.log(newChartData.datasets[0].data[0].x);
+        console.log(tXY);
+        const new2 = tXY[1].map(x => x.x);
+        console.log("!!!! ", new2);
+
         this.setState({
-          mainChart: newChartData
+          mainChart: newChartData,
+          mainChartA: newChartDataA,
+          mainChartB: newChartDataB,
+          mainChartC: newChartDataC
         });
         // console.log(this.state.mainChart);
       })
       .catch(error => console.log("Error: " + error));
   }
 
-  roundMinutes(date) {
+  roundHour(date) {
     date.setHours(date.getHours() + Math.round(date.getMinutes() / 60));
     date.setMinutes(0);
     date.setSeconds(0);
@@ -292,7 +359,7 @@ class Dashboard extends Component {
                     className="chart-wrapper"
                     style={{ height: 300 + "px", marginTop: 40 + "px" }}>
                     <Line
-                      data={this.state.mainChart}
+                      data={this.state.mainChartA}
                       options={this.mainChartOpts}
                       height={300}
                     />
@@ -302,7 +369,7 @@ class Dashboard extends Component {
                     className="chart-wrapper"
                     style={{ height: 300 + "px", marginTop: 40 + "px" }}>
                     <Line
-                      data={this.state.mainChart}
+                      data={this.state.mainChartB}
                       options={this.mainChartOpts}
                       height={300}
                     />
@@ -312,7 +379,7 @@ class Dashboard extends Component {
                     className="chart-wrapper"
                     style={{ height: 300 + "px", marginTop: 40 + "px" }}>
                     <Line
-                      data={this.state.mainChart}
+                      data={this.state.mainChartC}
                       options={this.mainChartOpts}
                       height={300}
                     />
