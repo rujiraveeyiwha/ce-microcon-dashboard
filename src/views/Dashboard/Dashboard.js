@@ -45,7 +45,6 @@ class Dashboard extends Component {
             data: [10, 20, 30],
             spanGaps: true
           },
-
           {
             label: "Node B",
             backgroundColor: hexToRgba("#07C0BB", 10),
@@ -53,7 +52,7 @@ class Dashboard extends Component {
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
             data: [10, 20, 30],
-            spanGaps: true
+            spanGaps: true,
           },
           {
             label: "Node C",
@@ -104,13 +103,14 @@ class Dashboard extends Component {
       }
     };
 
+
     this.mainChartOpts = {
       responsive: true,
       tooltips: {
         enabled: false,
         custom: CustomTooltips,
         intersect: true,
-        mode: "index",
+        mode: "single", //single or index
         position: "nearest",
         callbacks: {
           labelColor: function(tooltipItem, chart) {
@@ -140,7 +140,8 @@ class Dashboard extends Component {
               unit: "hour",
               displayFormats: {
                 hour: "hA D/MMM"
-              }
+              },
+              
             }
           }
         ],
@@ -215,14 +216,14 @@ class Dashboard extends Component {
             }
           ]
         };
-        console.log(tXY);
+        // console.log(this.state.mainChart.datasets[1]);
 
         const newChartDataA = {
           ...this.state.mainChartA,
           labels: tLabel[0],
           datasets: [
             {
-              ...this.state.mainChartA.datasets[0],
+              ...this.state.mainChart.datasets[0],
               data: tXY[0]
             }
           ]
@@ -233,7 +234,7 @@ class Dashboard extends Component {
           labels: tLabel[1],
           datasets: [
             {
-              ...this.state.mainChartB.datasets[1],
+              ...this.state.mainChart.datasets[1],
               data: tXY[1]
             }
           ]
@@ -244,7 +245,7 @@ class Dashboard extends Component {
           labels: tLabel[2],
           datasets: [
             {
-              ...this.state.mainChartC.datasets[2],
+              ...this.state.mainChart.datasets[2],
               data: tXY[2]
             }
           ]
