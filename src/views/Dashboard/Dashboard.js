@@ -26,14 +26,10 @@ class Dashboard extends Component {
     //   1000 * 60 * 1
     // );
 
-    this.toggle = this.toggle.bind(this);
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
-
     this.load = true;
 
     this.state = {
-      dropdownOpen: false,
-      radioSelected: 1,
+      radioSelected: 0,
       mainChart: {
         datasets: [
           {
@@ -52,7 +48,7 @@ class Dashboard extends Component {
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
             data: [10, 20, 30],
-            spanGaps: true,
+            spanGaps: true
           },
           {
             label: "Node C",
@@ -103,7 +99,6 @@ class Dashboard extends Component {
       }
     };
 
-
     this.mainChartOpts = {
       responsive: true,
       tooltips: {
@@ -140,8 +135,7 @@ class Dashboard extends Component {
               unit: "hour",
               displayFormats: {
                 hour: "hA D/MMM"
-              },
-              
+              }
             }
           }
         ],
@@ -175,89 +169,24 @@ class Dashboard extends Component {
           "us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
       )
       .then(response => {
+        this.setState({
+          response: response.data
+        });
+
         this.load = false;
         const data = JSON.stringify(response.data, null, 4);
         console.log("[RESPONSE] " + data);
 
-        const resData = response.data.map(x =>
-          x.filter(
-            y =>
-              new Date() - new Date(y.timestampISO) <= 1000 * 60 * 60 * 24 * 7
-          )
-        );
-        // const tData = resData.map(x => x.map(y => y.value));
-        const tLabel = resData.map(x =>
-          x.map(y => this.roundHour(new Date(y.timestampISO)))
-        );
-        const tXY = resData.map(x =>
-          x.map(y => {
-            return {
-              y: y.value,
-              x: this.roundHour(new Date(y.timestampISO))
-            };
-          })
-        );
+        var today = new Date();
+        var midNight = new Date();
+        midNight.setHours(0);
+        midNight.setMinutes(0);
+        midNight.setSeconds(0);
+        midNight.setMilliseconds(0);
 
-        const newChartData = {
-          ...this.state.mainChart,
-          labels: tLabel[1],
-          datasets: [
-            {
-              ...this.state.mainChart.datasets[0],
-              data: tXY[0]
-            },
-            {
-              ...this.state.mainChart.datasets[1],
-              data: tXY[1]
-            },
-            {
-              ...this.state.mainChart.datasets[2],
-              data: tXY[2]
-            }
-          ]
-        };
-        // console.log(this.state.mainChart.datasets[1]);
-
-        const newChartDataA = {
-          ...this.state.mainChartA,
-          labels: tLabel[0],
-          datasets: [
-            {
-              ...this.state.mainChart.datasets[0],
-              data: tXY[0]
-            }
-          ]
-        };
-
-        const newChartDataB = {
-          ...this.state.mainChartB,
-          labels: tLabel[1],
-          datasets: [
-            {
-              ...this.state.mainChart.datasets[1],
-              data: tXY[1]
-            }
-          ]
-        };
-
-        const newChartDataC = {
-          ...this.state.mainChartC,
-          labels: tLabel[2],
-          datasets: [
-            {
-              ...this.state.mainChart.datasets[2],
-              data: tXY[2]
-            }
-          ]
-        };
-
-        this.setState({
-          mainChart: newChartData,
-          mainChartA: newChartDataA,
-          mainChartB: newChartDataB,
-          mainChartC: newChartDataC
-        });
-        // console.log(this.state.mainChart);
+        var stopDate = new Date();
+        stopDate = new Date(midNight - 1000 * 60 * 60 * 24 * 7);
+        this.graphSetup(today, stopDate);
       })
       .catch(error => console.log("Error: " + error));
   }
@@ -269,15 +198,125 @@ class Dashboard extends Component {
     return date;
   }
 
-  toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
+  onRadioBtnClick(radioSelected) {
+    console.log(radioSelected);
+    var shift = radioSelected;
+    this.setState(
+      {
+        radioSelected: radioSelected
+      },
+      () => {
+        var today = new Date();
+
+        var midNight = new Date();
+        midNight.setHours(0);
+        midNight.setMinutes(0);
+        midNight.setSeconds(0);
+        midNight.setMilliseconds(0);
+
+        if (radioSelected === 0) {
+          var today = new Date();
+          var midNight = new Date();
+          midNight.setHours(0);
+          midNight.setMinutes(0);
+          midNight.setSeconds(0);
+          midNight.setMilliseconds(0);
+
+          var stopDate = new Date();
+          stopDate = new Date(midNight - 1000 * 60 * 60 * 24 * 7);
+          this.graphSetup(today, stopDate);
+        } else {
+          var stopDate = new Date(midNight - 1000 * 60 * 60 * 24 * shift);
+          var midNightStop = new Date(stopDate.getTime() + 1000 * 24 * 60 * 60);
+          this.graphSetup(midNightStop, stopDate);
+        }
+      }
+    );
   }
 
-  onRadioBtnClick(radioSelected) {
+  graphSetup(today, stopDate) {
+    console.log("Start: " + today);
+    console.log("Stop: " + stopDate);
+    console.log("------------------------------------------");
+
+    const resData = this.state.response.map(x =>
+      x.filter(
+        y =>
+          new Date(y.timestampISO) <= today &&
+          new Date(y.timestampISO) > stopDate
+      )
+    );
+
+    const tLabel = resData.map(x =>
+      x.map(y => this.roundHour(new Date(y.timestampISO)))
+    );
+    const tXY = resData.map(x =>
+      x.map(y => {
+        return {
+          y: y.value,
+          x: this.roundHour(new Date(y.timestampISO))
+        };
+      })
+    );
+
+    const newChartData = {
+      ...this.state.mainChart,
+      labels: tLabel[1],
+      datasets: [
+        {
+          ...this.state.mainChart.datasets[0],
+          data: tXY[0]
+        },
+        {
+          ...this.state.mainChart.datasets[1],
+          data: tXY[1]
+        },
+        {
+          ...this.state.mainChart.datasets[2],
+          data: tXY[2]
+        }
+      ]
+    };
+    // console.log(this.state.mainChart.datasets[1]);
+
+    const newChartDataA = {
+      ...this.state.mainChartA,
+      labels: tLabel[0],
+      datasets: [
+        {
+          ...this.state.mainChart.datasets[0],
+          data: tXY[0]
+        }
+      ]
+    };
+
+    const newChartDataB = {
+      ...this.state.mainChartB,
+      labels: tLabel[1],
+      datasets: [
+        {
+          ...this.state.mainChart.datasets[1],
+          data: tXY[1]
+        }
+      ]
+    };
+
+    const newChartDataC = {
+      ...this.state.mainChartC,
+      labels: tLabel[2],
+      datasets: [
+        {
+          ...this.state.mainChart.datasets[2],
+          data: tXY[2]
+        }
+      ]
+    };
+
     this.setState({
-      radioSelected: radioSelected
+      mainChart: newChartData,
+      mainChartA: newChartDataA,
+      mainChartB: newChartDataB,
+      mainChartC: newChartDataC
     });
   }
 
@@ -316,6 +355,12 @@ class Dashboard extends Component {
                       className="float-right"
                       aria-label="Toolbar with button groups">
                       <ButtonGroup className="mr-3" aria-label="First group">
+                        <Button
+                          color="outline-secondary"
+                          onClick={() => this.onRadioBtnClick(0)}
+                          active={this.state.radioSelected === 0}>
+                          7 Days
+                        </Button>
                         <Button
                           color="outline-secondary"
                           onClick={() => this.onRadioBtnClick(1)}
@@ -397,6 +442,7 @@ class Dashboard extends Component {
                       data={this.state.mainChartA}
                       options={this.mainChartOpts}
                       height={300}
+                      redraw
                     />
                   </Col>
                   <Col
@@ -407,6 +453,7 @@ class Dashboard extends Component {
                       data={this.state.mainChartB}
                       options={this.mainChartOpts}
                       height={300}
+                      redraw
                     />
                   </Col>
                   <Col
@@ -417,6 +464,7 @@ class Dashboard extends Component {
                       data={this.state.mainChartC}
                       options={this.mainChartOpts}
                       height={300}
+                      redraw
                     />
                   </Col>
                 </Row>
@@ -426,7 +474,7 @@ class Dashboard extends Component {
         </Row>
 
         {/* 3rd Grpah */}
-        <Row>
+        {/* <Row>
           <Col>
             <Card>
               <CardHeader>Highest {" & "} Lowest Temperature</CardHeader>
@@ -574,7 +622,7 @@ class Dashboard extends Component {
               </CardBody>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
       </div>
     );
   }

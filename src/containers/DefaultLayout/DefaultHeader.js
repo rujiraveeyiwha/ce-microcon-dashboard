@@ -20,22 +20,12 @@ class DefaultHeader extends Component {
 
     return (
       <React.Fragment>
-        <AppNavbarBrand
-          full={{ src: logo, width: 89, height: 25, alt: "CoreUI Logo" }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: "CoreUI Logo" }}
-        />
-  
+        <AppNavbarBrand className="text-white">Microcontroller <i class="fa fa-cogs pl-1" aria-hidden="true"></i></AppNavbarBrand>
           <Nav className="d-md-down-none mr-auto" navbar>
             <NavItem className="px-3">
               <Link to="/" className="nav-link">
                 Dashboard
               </Link>
-            </NavItem>
-            <NavItem className="px-3">
-              <Link to="/users" >About</Link>
-            </NavItem>
-            <NavItem className="px-3">
-              <Link to="/users">Members</Link>
             </NavItem>
           </Nav>
       </React.Fragment>
