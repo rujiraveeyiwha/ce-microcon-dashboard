@@ -1,4 +1,4 @@
-import React, { Component, lazy } from "react";
+import React, { Component } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import {
   Badge,
@@ -7,7 +7,6 @@ import {
   ButtonToolbar,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   CardTitle,
   Col,
@@ -15,24 +14,8 @@ import {
   Row
 } from "reactstrap";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
-import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
+import { hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
 import axios from "axios";
-import moment from "moment";
-
-const Widget03 = lazy(() => import("../../views/Widgets/Widget03"));
-
-const brandPrimary = getStyle("--primary");
-const brandSuccess = getStyle("--success");
-const brandInfo = getStyle("--info");
-const brandWarning = getStyle("--warning");
-const brandDanger = getStyle("--danger");
-
-// Main Chart
-
-//Random Numbers
-function random(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
 
 class Dashboard extends Component {
   constructor(props) {
@@ -59,15 +42,18 @@ class Dashboard extends Component {
             borderColor: "#118AB2",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: [10, 20, 30]
+            data: [10, 20, 30],
+            spanGaps: true
           },
+
           {
             label: "Node B",
             backgroundColor: hexToRgba("#07C0BB", 10),
             borderColor: "#07C0BB",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: [10, 20, 30]
+            data: [10, 20, 30],
+            spanGaps: true
           },
           {
             label: "Node C",
@@ -75,7 +61,8 @@ class Dashboard extends Component {
             borderColor: "#EF476F",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: [40, 40, 40, 40, 40]
+            data: [40, 40, 40, 40, 40],
+            spanGaps: true
           }
         ]
       },
@@ -111,7 +98,7 @@ class Dashboard extends Component {
             borderColor: "#EF476F",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: [10, 11,12,13,14,15,16,17]
+            data: [10, 11, 12, 13, 14, 15, 16, 17]
           }
         ]
       }
@@ -148,7 +135,7 @@ class Dashboard extends Component {
               autoSkip: true,
               source: "labels"
             },
-            type: "category",
+            type: "time",
             time: {
               unit: "hour",
               displayFormats: {
@@ -189,15 +176,15 @@ class Dashboard extends Component {
       .then(response => {
         this.load = false;
         const data = JSON.stringify(response.data, null, 4);
-        console.log("[RESPONSE]" + " " + data);
-        
+        console.log("[RESPONSE] " + data);
+
         const resData = response.data.map(x =>
           x.filter(
             y =>
               new Date() - new Date(y.timestampISO) <= 1000 * 60 * 60 * 24 * 7
           )
         );
-        const tData = resData.map(x => x.map(y => y.value));
+        // const tData = resData.map(x => x.map(y => y.value));
         const tLabel = resData.map(x =>
           x.map(y => this.roundHour(new Date(y.timestampISO)))
         );
@@ -228,7 +215,7 @@ class Dashboard extends Component {
             }
           ]
         };
-        console.log(tXY[2]);
+        console.log(tXY);
 
         const newChartDataA = {
           ...this.state.mainChartA,
