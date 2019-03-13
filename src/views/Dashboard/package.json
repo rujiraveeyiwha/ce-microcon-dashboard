@@ -2,5 +2,8 @@
   "name": "Dashboard",
   "version": "0.0.0",
   "private": true,
-  "main": "./Dashboard.js"
+  "main": "./Dashboard.js",
+  "dependencies": {
+    "react-unused-components": "^1.0.1"
+  }
 }

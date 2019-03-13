@@ -3,14 +3,12 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import {
-  AppFooter,
   AppHeader,
 } from '@coreui/react';
 // sidebar nav config
 // routes config
 import routes from '../../routes';
 
-const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {

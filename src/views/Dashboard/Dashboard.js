@@ -1,21 +1,9 @@
-import React, { Component } from "react";
-import { Bar, Line } from "react-chartjs-2";
-import {
-  Badge,
-  Button,
-  ButtonGroup,
-  ButtonToolbar,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Col,
-  Progress,
-  Row
-} from "reactstrap";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
 import { hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
 import axios from "axios";
+import React, { Component } from "react";
+import { Line } from "react-chartjs-2";
+import { Button, ButtonGroup, ButtonToolbar, Card, CardBody, CardTitle, Col, Row } from "reactstrap";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -348,7 +336,9 @@ class Dashboard extends Component {
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">Overview</CardTitle>
-                    <div className="small text-muted">7 Days Temperature Records</div>
+                    <div className="small text-muted">
+                      7 Days Temperature Records
+                    </div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <ButtonToolbar
@@ -472,157 +462,6 @@ class Dashboard extends Component {
             </Card>
           </Col>
         </Row>
-
-        {/* 3rd Grpah */}
-        {/* <Row>
-          <Col>
-            <Card>
-              <CardHeader>Highest {" & "} Lowest Temperature</CardHeader>
-              <CardBody>
-                <Row>
-                  <Col xs="12" md="6" xl="6">
-                    <div className="progress-group mb-4">
-                      <div className="progress-group-prepend">
-                        <span className="progress-group-text">19 March</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <Progress
-                          className="progress-xs"
-                          color="info"
-                          value="34"
-                        />
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="78"
-                        />
-                      </div>
-                    </div>
-                    <div className="progress-group mb-4">
-                      <div className="progress-group-prepend">
-                        <span className="progress-group-text">20 March</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <Progress
-                          className="progress-xs"
-                          color="info"
-                          value="56"
-                        />
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="94"
-                        />
-                      </div>
-                    </div>
-                    <div className="progress-group mb-4">
-                      <div className="progress-group-prepend">
-                        <span className="progress-group-text">21 March</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <Progress
-                          className="progress-xs"
-                          color="info"
-                          value="12"
-                        />
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="67"
-                        />
-                      </div>
-                    </div>
-                    <div className="progress-group mb-4">
-                      <div className="progress-group-prepend">
-                        <span className="progress-group-text">22 March</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <Progress
-                          className="progress-xs"
-                          color="info"
-                          value="43"
-                        />
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="91"
-                        />
-                      </div>
-                    </div>
-                    <div className="progress-group mb-4">
-                      <div className="progress-group-prepend">
-                        <span className="progress-group-text">23 March</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <Progress
-                          className="progress-xs"
-                          color="info"
-                          value="22"
-                        />
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="73"
-                        />
-                      </div>
-                    </div>
-                    <div className="progress-group mb-4">
-                      <div className="progress-group-prepend">
-                        <span className="progress-group-text">24 March</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <Progress
-                          className="progress-xs"
-                          color="info"
-                          value="53"
-                        />
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="82"
-                        />
-                      </div>
-                    </div>
-                    <div className="progress-group mb-4">
-                      <div className="progress-group-prepend">
-                        <span className="progress-group-text">25 March</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <Progress
-                          className="progress-xs"
-                          color="info"
-                          value="9"
-                        />
-                        <Progress
-                          className="progress-xs"
-                          color="danger"
-                          value="69"
-                        />
-                      </div>
-                    </div>
-                    <div className="legend text-center">
-                      <small>
-                        <sup className="px-1">
-                          <Badge pill color="info">
-                            &nbsp;
-                          </Badge>
-                        </sup>
-                        Lowest Temperature &nbsp;
-                        <sup className="px-1">
-                          <Badge pill color="danger">
-                            &nbsp;
-                          </Badge>
-                        </sup>
-                        Highest Temperature
-                      </small>
-                    </div>
-                  </Col>
-                </Row>
-                <br />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row> */}
       </div>
     );
   }
