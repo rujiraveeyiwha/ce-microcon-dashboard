@@ -74,8 +74,8 @@ class Dashboard extends Component {
             backgroundColor: hexToRgba("#EF476F", 10),
             borderColor: "#EF476F",
             pointHoverBackgroundColor: "#fff",
-            borderWidth: 1,
-            data: [10, 20, 30]
+            borderWidth: 2,
+            data: [40, 40, 40, 40, 40]
           }
         ]
       },
@@ -110,8 +110,8 @@ class Dashboard extends Component {
             backgroundColor: hexToRgba("#EF476F", 10),
             borderColor: "#EF476F",
             pointHoverBackgroundColor: "#fff",
-            borderWidth: 1,
-            data: [10, 20, 30]
+            borderWidth: 2,
+            data: [10, 11,12,13,14,15,16,17]
           }
         ]
       }
@@ -190,6 +190,7 @@ class Dashboard extends Component {
         this.load = false;
         const data = JSON.stringify(response.data, null, 4);
         console.log("[RESPONSE]" + " " + data);
+        
         const resData = response.data.map(x =>
           x.filter(
             y =>
@@ -227,6 +228,7 @@ class Dashboard extends Component {
             }
           ]
         };
+        console.log(tXY[2]);
 
         const newChartDataA = {
           ...this.state.mainChartA,
@@ -260,11 +262,6 @@ class Dashboard extends Component {
             }
           ]
         };
-
-        // console.log(newChartData.datasets[0].data[0].x);
-        console.log(tXY);
-        const new2 = tXY[1].map(x => x.x);
-        console.log("!!!! ", new2);
 
         this.setState({
           mainChart: newChartData,
@@ -325,6 +322,56 @@ class Dashboard extends Component {
                   <Col sm="5">
                     <CardTitle className="mb-0">Overview</CardTitle>
                     <div className="small text-muted">19 - 25 March 2019</div>
+                  </Col>
+                  <Col sm="7" className="d-none d-sm-inline-block">
+                    <ButtonToolbar
+                      className="float-right"
+                      aria-label="Toolbar with button groups">
+                      <ButtonGroup className="mr-3" aria-label="First group">
+                        <Button
+                          color="outline-secondary"
+                          onClick={() => this.onRadioBtnClick(1)}
+                          active={this.state.radioSelected === 1}>
+                          19 Mar
+                        </Button>
+                        <Button
+                          color="outline-secondary"
+                          onClick={() => this.onRadioBtnClick(2)}
+                          active={this.state.radioSelected === 2}>
+                          20 Mar
+                        </Button>
+                        <Button
+                          color="outline-secondary"
+                          onClick={() => this.onRadioBtnClick(3)}
+                          active={this.state.radioSelected === 3}>
+                          21 Mar
+                        </Button>
+                        <Button
+                          color="outline-secondary"
+                          onClick={() => this.onRadioBtnClick(4)}
+                          active={this.state.radioSelected === 4}>
+                          22 Mar
+                        </Button>
+                        <Button
+                          color="outline-secondary"
+                          onClick={() => this.onRadioBtnClick(5)}
+                          active={this.state.radioSelected === 5}>
+                          23 Mar
+                        </Button>
+                        <Button
+                          color="outline-secondary"
+                          onClick={() => this.onRadioBtnClick(6)}
+                          active={this.state.radioSelected === 6}>
+                          24 Mar
+                        </Button>
+                        <Button
+                          color="outline-secondary"
+                          onClick={() => this.onRadioBtnClick(7)}
+                          active={this.state.radioSelected === 7}>
+                          25 Mar
+                        </Button>
+                      </ButtonGroup>
+                    </ButtonToolbar>
                   </Col>
                 </Row>
                 <div
