@@ -167,17 +167,21 @@ class Dashboard extends Component {
           x.filter(
             y =>
               new Date() - new Date(y.timestampISO) <= 1000 * 60 * 60 * 24 * 7
+              
           )
         );
         const tData = resData.map(x => x.map(y => y.value));
-        const tLabel = resData.map(x => x.map(y => new Date(y.timestampISO)));
-        const tXY  = resData.map(x => x.map(y => {
-          return {
-            y: y.value,
-            x: new Date(y.timestampISO)
-          }
-        }
-      ))
+        const tLabel = resData.map(x => x.map(y => this.roundMinutes(new Date(y.timestampISO))));
+        const tXY = resData.map(x =>
+          x.map(y => {
+            return {
+              y: y.value,
+              x: this.roundMinutes(new Date(y.timestampISO))
+            };
+          })
+        );
+
+        console.log(tLabel);
 
         const newChartData = {
           ...this.state.mainChart,
@@ -201,9 +205,16 @@ class Dashboard extends Component {
         this.setState({
           mainChart: newChartData
         });
-        console.log(this.state.mainChart);
+        // console.log(this.state.mainChart);
       })
       .catch(error => console.log("Error: " + error));
+  }
+
+  roundMinutes(date) {
+    date.setHours(date.getHours() + Math.round(date.getMinutes() / 60));
+    date.setMinutes(0);
+    date.setSeconds(0);
+    return date;
   }
 
   toggle() {
@@ -223,7 +234,10 @@ class Dashboard extends Component {
   );
 
   componentDidMount() {
-    let intervalId = setInterval(() => this.getDataFromFirebase(),1000 * 60 * 1);
+    let intervalId = setInterval(
+      () => this.getDataFromFirebase(),
+      1000 * 60 * 60
+    ); //polling every hour
     this.setState({ intervalId: intervalId });
   }
 
