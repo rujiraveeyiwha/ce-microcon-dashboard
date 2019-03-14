@@ -331,7 +331,7 @@ class Dashboard extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col>
-            <Card>
+            <Card className="dark-card2">
               <CardBody>
                 <Row>
                   <Col sm="5">
@@ -415,7 +415,7 @@ class Dashboard extends Component {
         {/* 2nd Graph */}
         <Row>
           <Col>
-            <Card>
+            <Card className="dark-card2">
               <CardBody>
                 <Row>
                   <Col sm="5">
