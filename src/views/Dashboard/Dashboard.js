@@ -3,7 +3,17 @@ import { hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
 import axios from "axios";
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2";
-import { Button, ButtonGroup, ButtonToolbar, Card, CardBody, CardTitle, Col, Row } from "reactstrap";
+import {
+  Button,
+  ButtonGroup,
+  ButtonToolbar,
+  Card,
+  CardBody,
+  CardTitle,
+  Col,
+  Row,
+  CardText
+} from "reactstrap";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -118,7 +128,7 @@ class Dashboard extends Component {
             ticks: {
               autoSkip: true,
               source: "labels",
-              fontColor: '#8B9096'
+              fontColor: "#8B9096"
             },
             type: "time",
             time: {
@@ -136,13 +146,13 @@ class Dashboard extends Component {
               maxTicksLimit: 5,
               stepSize: 10,
               max: 40,
-              fontColor: 'white',
-              color: '#6A7178'
+              fontColor: "white",
+              color: "#6A7178"
             },
             gridLines: {
               color: "#6A7178"
-            },
-          },
+            }
+          }
         ]
       },
       elements: {
@@ -316,7 +326,9 @@ class Dashboard extends Component {
   }
 
   loading = () => (
-    <div className="animated fadeIn pt-1 text-center text-white">Loading...</div>
+    <div className="animated fadeIn pt-1 text-center text-white">
+      Loading...
+    </div>
   );
 
   componentDidMount() {
@@ -423,7 +435,7 @@ class Dashboard extends Component {
         <Row>
           <Col>
             <Card className="dark-card2">
-              <CardBody>
+              <CardBody className="mb-4">
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">Graph by Node</CardTitle>
@@ -441,6 +453,7 @@ class Dashboard extends Component {
                       height={300}
                       redraw
                     />
+                    <div className="text-center">Node A</div>
                   </Col>
                   <Col
                     sm="4"
@@ -452,6 +465,7 @@ class Dashboard extends Component {
                       height={300}
                       redraw
                     />
+                    <div className="text-center">Node B</div>
                   </Col>
                   <Col
                     sm="4"
@@ -463,9 +477,41 @@ class Dashboard extends Component {
                       height={300}
                       redraw
                     />
+                    <div className="text-center">Node C</div>
                   </Col>
                 </Row>
               </CardBody>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* 3rd graph */}
+        <Row>
+          <Col sm="4">
+            <Card body className="text-center dark-card2">
+              <CardTitle>Special Title Treatment</CardTitle>
+              <CardText>
+                With supporting text below as a natural lead-in to additional
+                content.
+              </CardText>
+            </Card>
+          </Col>
+          <Col sm="4">
+            <Card body className="text-center dark-card2">
+              <CardTitle>Special Title Treatment</CardTitle>
+              <CardText>
+                With supporting text below as a natural lead-in to additional
+                content.
+              </CardText>
+            </Card>
+          </Col>
+          <Col sm="4">
+            <Card body className="text-center dark-card2">
+              <CardTitle>Special Title Treatment</CardTitle>
+              <CardText>
+                With supporting text below as a natural lead-in to additional
+                content.
+              </CardText>
             </Card>
           </Col>
         </Row>
