@@ -32,26 +32,26 @@ class Dashboard extends Component {
         datasets: [
           {
             label: "Node A",
-            backgroundColor: hexToRgba("#118AB2", 10),
-            borderColor: "#118AB2",
+            backgroundColor: hexToRgba("#D1495B", 20),
+            borderColor: "#D1495B",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: [10, 20, 30],
+            data: [20, 20, 30],
             spanGaps: true
           },
           {
             label: "Node B",
-            backgroundColor: hexToRgba("#07C0BB", 10),
-            borderColor: "#07C0BB",
+            backgroundColor: hexToRgba("#EDAE49", 20),
+            borderColor: "#EDAE49",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: [10, 20, 30],
+            data: [20, 20, 30],
             spanGaps: true
           },
           {
             label: "Node C",
-            backgroundColor: hexToRgba("#EF476F", 10),
-            borderColor: "#EF476F",
+            backgroundColor: hexToRgba("#2111A0", 20),
+            borderColor: "#2111A0",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
             data: [40, 40, 40, 40, 40],
@@ -63,11 +63,11 @@ class Dashboard extends Component {
         datasets: [
           {
             label: "Node A",
-            backgroundColor: hexToRgba("#118AB2", 10),
-            borderColor: "#118AB2",
+            backgroundColor: hexToRgba("#D1495B", 20),
+            borderColor: "#D1495B",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: [10, 20, 30]
+            data: [20, 20, 30]
           }
         ]
       },
@@ -75,11 +75,11 @@ class Dashboard extends Component {
         datasets: [
           {
             label: "Node B",
-            backgroundColor: hexToRgba("#07C0BB", 10),
-            borderColor: "#07C0BB",
+            backgroundColor: hexToRgba("#EDAE49", 20),
+            borderColor: "#EDAE49",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
-            data: [10, 20, 30]
+            data: [20, 20, 30]
           }
         ]
       },
@@ -87,8 +87,8 @@ class Dashboard extends Component {
         datasets: [
           {
             label: "Node C",
-            backgroundColor: hexToRgba("#EF476F", 10),
-            borderColor: "#EF476F",
+            backgroundColor: hexToRgba("#054A91", 20),
+            borderColor: "#054A91",
             pointHoverBackgroundColor: "#fff",
             borderWidth: 2,
             data: [10, 11, 12, 13, 14, 15, 16, 17]
@@ -104,7 +104,7 @@ class Dashboard extends Component {
         custom: CustomTooltips,
         intersect: true,
         mode: "single", //single or index
-        position: "nearest",
+        // position: "nearest",
         callbacks: {
           labelColor: function(tooltipItem, chart) {
             return {
@@ -282,7 +282,12 @@ class Dashboard extends Component {
         }
       ]
     };
-    // console.log(this.state.mainChart.datasets[1]);
+
+    this.setState({
+      currentA: tXY[0][tXY[0].length - 1].y,
+      currentB: tXY[1][tXY[1].length - 1].y,
+      currentC: tXY[2][tXY[2].length - 1].y
+    });
 
     const newChartDataA = {
       ...this.state.mainChartA,
@@ -354,7 +359,9 @@ class Dashboard extends Component {
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">Overview</CardTitle>
+                    <CardTitle className="mb-0">
+                      <h4>Overview</h4>
+                    </CardTitle>
                     <div className="small text-muted">
                       7 Days Temperature Records
                     </div>
@@ -438,7 +445,9 @@ class Dashboard extends Component {
               <CardBody className="mb-4">
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">Graph by Node</CardTitle>
+                    <CardTitle className="mb-0">
+                      <h4>Graph by Node</h4>
+                    </CardTitle>
                     <div className="small text-muted">19 - 25 March 2019</div>
                   </Col>
                 </Row>
@@ -489,29 +498,35 @@ class Dashboard extends Component {
         <Row>
           <Col sm="4">
             <Card body className="text-center dark-card2">
-              <CardTitle>Special Title Treatment</CardTitle>
-              <CardText>
-                With supporting text below as a natural lead-in to additional
-                content.
-              </CardText>
+              <CardTitle className="text-center card-title">
+                <h4>
+                  Node A <i className="fa fa-microchip node-a" />
+                </h4>
+                <hr className="node-a" />
+              </CardTitle>
+              <CardText>{this.state.currentA} &#8451;</CardText>
             </Card>
           </Col>
           <Col sm="4">
             <Card body className="text-center dark-card2">
-              <CardTitle>Special Title Treatment</CardTitle>
-              <CardText>
-                With supporting text below as a natural lead-in to additional
-                content.
-              </CardText>
+              <CardTitle className="text-center card-title">
+                <h4>
+                  Node B <i className="fa fa-microchip node-b" />
+                </h4>
+                <hr className="node-b" />
+              </CardTitle>
+              <CardText>{this.state.currentB} &#8451;</CardText>
             </Card>
           </Col>
           <Col sm="4">
             <Card body className="text-center dark-card2">
-              <CardTitle>Special Title Treatment</CardTitle>
-              <CardText>
-                With supporting text below as a natural lead-in to additional
-                content.
-              </CardText>
+              <CardTitle className="text-center card-title">
+                <h4>
+                  Node C <i className="fa fa-microchip node-c" />
+                </h4>
+                <hr className="node-c" />
+              </CardTitle>
+              <CardText>{this.state.currentC} &#8451;</CardText>
             </Card>
           </Col>
         </Row>
