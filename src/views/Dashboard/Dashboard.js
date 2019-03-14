@@ -112,11 +112,13 @@ class Dashboard extends Component {
         xAxes: [
           {
             gridLines: {
-              drawOnChartArea: false
+              drawOnChartArea: false,
+              color: "#8B9096"
             },
             ticks: {
               autoSkip: true,
-              source: "labels"
+              source: "labels",
+              fontColor: '#8B9096'
             },
             type: "time",
             time: {
@@ -133,9 +135,14 @@ class Dashboard extends Component {
               beginAtZero: true,
               maxTicksLimit: 5,
               stepSize: 10,
-              max: 40
-            }
-          }
+              max: 40,
+              fontColor: 'white',
+              color: '#6A7178'
+            },
+            gridLines: {
+              color: "#6A7178"
+            },
+          },
         ]
       },
       elements: {
@@ -309,7 +316,7 @@ class Dashboard extends Component {
   }
 
   loading = () => (
-    <div className="animated fadeIn pt-1 text-center">Loading...</div>
+    <div className="animated fadeIn pt-1 text-center text-white">Loading...</div>
   );
 
   componentDidMount() {

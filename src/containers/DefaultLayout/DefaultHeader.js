@@ -18,7 +18,7 @@ class DefaultHeader extends Component {
 
     return (
       <React.Fragment>
-        <AppNavbarBrand className="text-white">Microcontroller <i className="fa fa-cogs pl-1" aria-hidden="true"></i></AppNavbarBrand>
+        <AppNavbarBrand className="text-white pl-3">Microcontroller <i className="fa fa-cogs pl-1" aria-hidden="true"></i></AppNavbarBrand>
           <Nav className="d-md-down-none mr-auto" navbar>
             <NavItem className="px-3">
               <Link to="/" className="nav-link">
