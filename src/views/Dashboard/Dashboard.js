@@ -167,7 +167,7 @@ class Dashboard extends Component {
   }
 
   getDataFromFirebase() {
-    console.log("[GET DATA FROM FIREBASE]");
+    // console.log("[GET DATA FROM FIREBASE]");
     return axios
       .get(
         "https://cors-anywhere.herokuapp.com/" +
@@ -179,8 +179,16 @@ class Dashboard extends Component {
         });
 
         this.load = false;
-        const data = JSON.stringify(response.data, null, 4);
-        console.log("[RESPONSE] " + data);
+        const data = response.data;
+        
+        // console.log(JSON.stringify(data));
+
+        this.setState({
+          currentTempA: data[0][data[0].length-1].value,
+          currentTempB: data[1][data[1].length-1].value,
+          currentTempC: data[2][data[2].length-1].value,
+        })
+        console.log("[RESPONSE] " + JSON.stringify(data[1][data[1].length-1].value));
 
         var today = new Date();
         var midNight = new Date();
@@ -204,7 +212,7 @@ class Dashboard extends Component {
   }
 
   onRadioBtnClick(radioSelected) {
-    console.log(radioSelected);
+    // console.log(radioSelected);
     var shift = radioSelected;
     this.setState(
       {
@@ -240,9 +248,9 @@ class Dashboard extends Component {
   }
 
   graphSetup(today, stopDate) {
-    console.log("Start: " + today);
-    console.log("Stop: " + stopDate);
-    console.log("------------------------------------------");
+    // console.log("Start: " + today);
+    // console.log("Stop: " + stopDate);
+    // console.log("------------------------------------------");
 
     const resData = this.state.response.map(x =>
       x.filter(
@@ -255,6 +263,7 @@ class Dashboard extends Component {
     const tLabel = resData.map(x =>
       x.map(y => this.roundHour(new Date(y.timestampISO)))
     );
+
     const tXY = resData.map(x =>
       x.map(y => {
         return {
@@ -282,12 +291,6 @@ class Dashboard extends Component {
         }
       ]
     };
-
-    this.setState({
-      currentA: tXY[0][tXY[0].length - 1].y,
-      currentB: tXY[1][tXY[1].length - 1].y,
-      currentC: tXY[2][tXY[2].length - 1].y
-    });
 
     const newChartDataA = {
       ...this.state.mainChartA,
@@ -504,7 +507,7 @@ class Dashboard extends Component {
                 </h4>
                 <hr className="node-a" />
               </CardTitle>
-              <CardText>{this.state.currentA} &#8451;</CardText>
+              <CardText>{this.state.currentTempA} &#8451;</CardText>
             </Card>
           </Col>
           <Col sm="4">
@@ -515,7 +518,7 @@ class Dashboard extends Component {
                 </h4>
                 <hr className="node-b" />
               </CardTitle>
-              <CardText>{this.state.currentB} &#8451;</CardText>
+              <CardText>{this.state.currentTempB} &#8451;</CardText>
             </Card>
           </Col>
           <Col sm="4">
@@ -526,7 +529,7 @@ class Dashboard extends Component {
                 </h4>
                 <hr className="node-c" />
               </CardTitle>
-              <CardText>{this.state.currentC} &#8451;</CardText>
+              <CardText>{this.state.currentTempC} &#8451;</CardText>
             </Card>
           </Col>
         </Row>
