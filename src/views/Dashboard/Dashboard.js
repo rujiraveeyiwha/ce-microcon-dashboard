@@ -14,10 +14,20 @@ import {
   Row,
   CardText
 } from "reactstrap";
+import firebase from 'firebase/app';
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    var config = {
+      apiKey: "AIzaSyDcLYktbMdvTRHsXezSrsW4PK3X2w9H0Eo",
+      authDomain: "ce-microcon-logger.firebaseapp.com",
+      databaseURL: "https://ce-microcon-logger.firebaseio.com",
+      projectId: "ce-microcon-logger",
+      storageBucket: "ce-microcon-logger.appspot.com",
+      messagingSenderId: "348912503004"
+    };
+    firebase.initializeApp(config);
     this.getDataFromFirebase();
     // this.myInterval = setInterval(
     //   () => this.getDataFromFirebase(),
