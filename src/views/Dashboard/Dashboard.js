@@ -14,7 +14,7 @@ import {
   Row,
   CardText
 } from "reactstrap";
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -109,12 +109,16 @@ class Dashboard extends Component {
 
     this.mainChartOpts = {
       responsive: true,
+      hover: {
+        mode: 'x'
+      },
       tooltips: {
         enabled: false,
         custom: CustomTooltips,
         intersect: true,
-        mode: "single", //single or index
-        // position: "nearest",
+        mode: "index",
+        axis: "x",
+        position: "nearest",
         callbacks: {
           labelColor: function(tooltipItem, chart) {
             return {
@@ -168,7 +172,7 @@ class Dashboard extends Component {
       elements: {
         point: {
           radius: 0,
-          hitRadius: 10,
+          hitRadius: 2,
           hoverRadius: 4,
           hoverBorderWidth: 3
         }
@@ -180,8 +184,8 @@ class Dashboard extends Component {
     // console.log("[GET DATA FROM FIREBASE]");
     return axios
       .get(
-        "https://cors-anywhere.herokuapp.com/" +
-          "us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
+        // "https://cors-anywhere.herokuapp.com/" +
+        "https://us-central1-ce-microcon-logger.cloudfunctions.net/api/v1/graphdata"
       )
       .then(response => {
         this.setState({
@@ -190,15 +194,17 @@ class Dashboard extends Component {
 
         this.load = false;
         const data = response.data;
-        
+
         // console.log(JSON.stringify(data));
 
         this.setState({
-          currentTempA: data[0][data[0].length-1].value,
-          currentTempB: data[1][data[1].length-1].value,
-          currentTempC: data[2][data[2].length-1].value,
-        })
-        console.log("[RESPONSE] " + JSON.stringify(data[1][data[1].length-1].value));
+          currentTempA: data[0][data[0].length - 1].value,
+          currentTempB: data[1][data[1].length - 1].value,
+          currentTempC: data[2][data[2].length - 1].value
+        });
+        console.log(
+          "[RESPONSE] " + JSON.stringify(data[1][data[1].length - 1].value)
+        );
 
         var today = new Date();
         var midNight = new Date();
